@@ -3,7 +3,7 @@ title: best-time-to-buy-and-sell-stock
 leetcode: https://leetcode.com/problems/best-time-to-buy-and-sell-stock
 difficulty: easy
 tags: [array, dynamic programming]
-status: [todo]
+status: [done]
 lang: [Go]
 ---
 
