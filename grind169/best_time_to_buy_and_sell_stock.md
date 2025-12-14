@@ -11,11 +11,11 @@ lang: [Go]
 
 ## Solution Overview
 
-* [Go Solution](./golang/best-time-to-buy-and-sell-stock.go)
+* [Go Solution](./golang/best_time_to_buy_and_sell_stock.go)
 
 **Approach:**
 
-Key point is to find out the minimal value in `prices`. There is no possible answer that sell price - (second min after min) is larger than sell price - min. 
+Key point is to find out the minimal value in `prices`. There is no possible answer that sell price - (second min after min) is larger than sell price - min.
 
 **Complexity:**
 - Time: $O(N)$
