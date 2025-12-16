@@ -1,8 +1,8 @@
-1.  Two Sum
-2.  Best Time to Buy and Sell Stock
-3.  Insert Interval
-4.  3Sum
-5.  Product of Array Except Self
+1.  ~~Two Sum~~
+2.  ~~Best Time to Buy and Sell Stock~~
+3.  ~~Insert Interval~~
+4.  ~~3Sum~~
+5.  ~~Product of Array Except Self~~
 6.  Combination Sum
 7.  Merge Intervals
 8.  Majority Element
