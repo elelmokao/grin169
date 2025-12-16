@@ -3,7 +3,7 @@ title: insert-interval
 leetcode: https://leetcode.com/problems/insert-interval
 difficulty: medium
 tags: [array]
-status: [review]
+status: [done, review]
 lang: [Go]
 ---
 
