@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 import os
 import sys
-import re
+import requests
+from dotenv import load_dotenv
+
 
 
 BASE_DIR = "grind169"
@@ -11,21 +13,60 @@ LANGS = [
     {"lang": "Python", "dir": "python", "ext": "py", "template": "./template/template.py"},
 ]
 LEETCODE_BASE = "https://leetcode.com/problems/"
+SUPABASE_URL = "https://raggfqikonlermdpkjcb.supabase.co/rest/v1/rpc/get_problem_metadata"
 
 def slugify(title: str) -> str:
     return title.lower().replace(" ", "_")
 
 
+def get_problem_metadata(problem_id: int):
+    load_dotenv()
+    key = os.getenv("ANON_KEY")
+    if not key:
+        print("Error: ANON_KEY environment variable not set.")
+        sys.exit(1)
+        
+    headers = {
+        "Content-Type": "application/json",
+        "apikey": key,
+        "Authorization": f"Bearer {key}"
+    }
+    payload = {"input_id": problem_id}
+    
+    try:
+        response = requests.post(SUPABASE_URL, headers=headers, json=payload)
+        response.raise_for_status()
+        data = response.json()
+        if not data:
+            print(f"No problem found with ID {problem_id}")
+            sys.exit(1)
+        return data[0]
+    except Exception as e:
+        print(f"Error fetching metadata: {e}")
+        sys.exit(1)
+
+
 def main():
 
     if len(sys.argv) < 2:
-        print("Usage: python add_problem.py two_sum [--lang cpp|python|go]")
+        print("Usage: python add_problem.py <problem_id> [--lang cpp|python|go]")
         sys.exit(1)
 
-    slug = sys.argv[1].strip().lower()
-    title = slug
+    try:
+        problem_id = int(sys.argv[1])
+    except ValueError:
+        print("Error: Problem ID must be an integer.")
+        sys.exit(1)
+
+    metadata = get_problem_metadata(problem_id)
+    
+    slug = metadata["slug"]
+    title = metadata["title"]
     url = LEETCODE_BASE + slug
     file_name = slug.replace("-", "_")
+    
+    difficulty_map = {1: "Easy", 2: "Medium", 3: "Hard"}
+    difficulty = difficulty_map.get(metadata["difficulty"], "Unknown")
 
     # 預設語言
     lang_name = "Go"
@@ -50,7 +91,7 @@ def main():
         content = content.format(
             Title=title,
             url=url,
-            difficulty="unknown",
+            difficulty=difficulty,
             lang=lang["lang"],
             langPath=f"./{lang['dir']}/{file_name}.{lang['ext']}",
         )
